@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Start Page</title>
+        <title>hasCode.com - Java EE 7 Websocket Tutorial</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script>
+        var wsocket;
+        function connect() {
+           wsocket = new WebSocket("ws://localhost:8080/hascode/chat");
+           wsocket.onmessage = onMessage;
+        }
+        function onMessage(evt) {
+           var returnMessage = evt.data;
+           document.getElementById('response').innerHTML = ""+returnMessage;
+        }
+        function sendMessage(){
+        	var msg = document.getElementById('message').value;
+        	wsocket.send(msg);
+        }
+        
+        window.addEventListener("load", connect, false);
+        </script>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <h1>Chat</h1>
+        <div id="response"></div>
+        <input type="text" id="message"/>
+        <input type="button" onclick="sendMessage()" value="Send"/>
     </body>
 </html>
