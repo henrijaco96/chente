@@ -7,6 +7,8 @@
 <meta name="description" content="">
 <meta name="author" content="Micha Kops">
 
+<script src="jquery-1.10.2.min.js"></script>
+
 <!-- Le styles -->
 <link href="./resource/css/bootstrap.css" rel="stylesheet">
 <style type="text/css">
@@ -80,7 +82,12 @@ body {
 		wsocket.send(msg);
 	}
 
-	window.addEventListener("load", connect, false);
+	function enterChat(){
+		var nickname = $('nickname').val();
+		var room = $('chatroom option:selected').val();
+		alert(nickname,room);
+	}
+	
 </script>
 </head>
 
@@ -100,7 +107,7 @@ body {
 					<option>scala</option>
 				</select>
 			</div>
-			<button class="btn btn-large btn-primary" type="submit">Sign
+			<button class="btn btn-large btn-primary" type="submit" onclick="enterChat">Sign
 				in</button>
 		</form>
 
