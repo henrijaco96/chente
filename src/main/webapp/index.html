@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="author" content="Micha Kops">
 
-<script src="jquery-1.10.2.min.js"></script>
+<script src="resource/js/jquery-1.10.2.min.js"></script>
 
 <!-- Le styles -->
 <link href="./resource/css/bootstrap.css" rel="stylesheet">
@@ -69,31 +69,42 @@ body {
 <link rel="shortcut icon" href="./resource/ico/favicon.png">
 <script>
 	var wsocket;
-	function connect() {
-		wsocket = new WebSocket("ws://localhost:8080/hascode/chat");
-		wsocket.onmessage = onMessage;
-	}
-	function onMessage(evt) {
-		var returnMessage = evt.data;
-		document.getElementById('response').innerHTML = "" + returnMessage;
+	var serviceLocation = "ws://0.0.0.0:8080/hascode/chat/";
+	var nickName = 'guest';
+	var room = '';
+	
+	function onMessageReceived(evt) {
+		var $message = $('<div class="message">'+evt.data+'</div>');
+		$('#response').append($message);
 	}
 	function sendMessage() {
-		var msg = document.getElementById('message').value;
+		var msg =$('#message').val();
 		wsocket.send(msg);
+		$('#message').val('').focus();
 	}
 
-	function enterChat(){
-		var nickname = $('nickname').val();
-		var room = $('chatroom option:selected').val();
-		alert(nickname,room);
+	function connectToChatserver(){
+		nickName = $('#nickname').val();
+		room = $('#chatroom option:selected').val();
+		wsocket = new WebSocket(serviceLocation+nickName+"/"+room);
+		wsocket.onmessage = onMessageReceived;
 	}
 	
+	$(document).ready(function(){
+		$('#enterRoom').click(function(evt){
+			evt.preventDefault();
+			connectToChatserver();
+			$('.chat-wrapper h2').text(nickName+"@"+room);
+			$('.chat-signin').hide();
+			$('.chat-wrapper').show();
+		});
+	});
 </script>
 </head>
 
 <body>
 
-	<div class="container">
+	<div class="container chat-signin">
 		<form class="form-signin">
 			<h2 class="form-signin-heading">Chat sign in</h2>
 			<label for="nickname">Nickname</label> <input type="text"
@@ -107,14 +118,14 @@ body {
 					<option>scala</option>
 				</select>
 			</div>
-			<button class="btn btn-large btn-primary" type="submit" onclick="enterChat">Sign
+			<button class="btn btn-large btn-primary" type="submit" id="enterRoom">Sign
 				in</button>
 		</form>
-
 	</div>
 	<!-- /container -->
 
-	<div class="container" style="display: none">
+	<div class="container chat-wrapper">
+		<h2></h2>
 		<div id="response"></div>
 		<input type="text" id="message" /> <input type="button"
 			onclick="sendMessage()" value="Send" />
