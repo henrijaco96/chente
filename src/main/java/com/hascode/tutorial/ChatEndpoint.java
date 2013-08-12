@@ -1,12 +1,12 @@
 package com.hascode.tutorial;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.websocket.EncodeException;
 import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -15,13 +15,19 @@ import javax.websocket.server.ServerEndpoint;
 public class ChatEndpoint {
 	private final Logger log = Logger.getLogger(getClass().getName());
 
+	@OnOpen
+	public void open(final Session session, @PathParam("room") final String room) {
+		log.info("session openend and bound to room: " + room);
+		session.getUserProperties().put("room", room);
+	}
+
 	@OnMessage
-	public void onMessage(final Session session, final ChatMessage chatMessage,
-			@PathParam("room") final String room) {
+	public void onMessage(final Session session, final ChatMessage chatMessage) {
+		String room = (String) session.getUserProperties().get("room");
 		try {
-			chatMessage.setReceived(new Date());
 			for (Session s : session.getOpenSessions()) {
-				if (s.isOpen()) {
+				if (s.isOpen()
+						&& room.equals(s.getUserProperties().get("room"))) {
 					s.getBasicRemote().sendObject(chatMessage);
 				}
 			}
