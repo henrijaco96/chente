@@ -74,11 +74,12 @@ body {
 	var room = '';
 	
 	function onMessageReceived(evt) {
-		var $message = $('<div class="message">'+evt.data+'</div>');
+		var msg = eval('(' + evt.data + ')');
+		var $message = $('<div class="message-line"><span class="date">'+msg.received+'</span><span class="user">'+msg.sender+'</span><span class="message">'+msg.message+'</span></div>');
 		$('#response').append($message);
 	}
 	function sendMessage() {
-		var msg =$('#message').val();
+		var msg = '{"message":"'+$('#message').val()+'", "sender":"'+nickName+'", "received":""}';
 		wsocket.send(msg);
 		$('#message').val('').focus();
 	}
@@ -86,11 +87,12 @@ body {
 	function connectToChatserver(){
 		nickName = $('#nickname').val();
 		room = $('#chatroom option:selected').val();
-		wsocket = new WebSocket(serviceLocation+nickName+"/"+room);
+		wsocket = new WebSocket(serviceLocation+room);
 		wsocket.onmessage = onMessageReceived;
 	}
 	
 	$(document).ready(function(){
+		$('.chat-wrapper').hide();
 		$('#enterRoom').click(function(evt){
 			evt.preventDefault();
 			connectToChatserver();
@@ -118,8 +120,7 @@ body {
 					<option>scala</option>
 				</select>
 			</div>
-			<button class="btn btn-large btn-primary" type="submit" id="enterRoom">Sign
-				in</button>
+			<button class="btn btn-large btn-primary" type="submit" id="enterRoom">Sign in</button>
 		</form>
 	</div>
 	<!-- /container -->
