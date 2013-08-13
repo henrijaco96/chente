@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.hascode.tutorial</groupId>
-	<artifactId>javaee7-embedded-glassfish-websockets</artifactId>
+	<artifactId>javaee7-websocket-chat</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
-	<name>javaee7-embedded-glassfish-websockets</name>
+	<name>javaee7-websocket-chat</name>
 
 	<properties>
 		<endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
