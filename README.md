@@ -1,8 +1,8 @@
-# Java EE 7 + Embedded GlassFish + Maven + WebSockets Tutorial
+# Java EE 7 - GlassFish WebSockets Chat Tutorial
 
-An example setting up a maven based Java EE 7 web application using the embedded GlassFish plugin and using WebSockets.
+An example setting up a websocket-enabled chat system using Java EE 7, custom encoders/decoders, GlassFish 4, the new Java API for JSON Processing and Bootstrap.
 
-For detailed information, please feel free to have a look at my blog at [www.hascode.com].
+For more detailed information, please feel free to have a look at my blog at [www.hascode.com].
 
 ----
 
