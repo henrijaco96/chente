@@ -49,6 +49,11 @@ body {
 	line-height: 40px;
 	width: 300px;
 }
+
+.received {
+	width: 160px;
+	font-size: 10px;
+}
 </style>
 <link href="./resource/css/bootstrap-responsive.css" rel="stylesheet">
 
@@ -75,13 +80,10 @@ body {
 
 	function onMessageReceived(evt) {
 		var msg = eval('(' + evt.data + ')');
-		var $message = $('<div class="message-line well well-small"><span class="date badge">'
-				+ msg.received
-				+ '</span><span class="label label-info"><span class="user">'
-				+ msg.sender
-				+ ':</span><span class="message">'
-				+ msg.message
-				+ '</span></span></div>');
+		var $message = $('<tr><td class="received">' + msg.received
+				+ '</td><td class="user label label-info">' + msg.sender
+				+ '</td><td class="message badge">' + msg.message
+				+ '</td></tr>');
 		$('#response').append($message);
 	}
 	function sendMessage() {
@@ -98,6 +100,13 @@ body {
 		wsocket.onmessage = onMessageReceived;
 	}
 
+	function leaveRoom() {
+		wsocket.close();
+		$('.chat-wrapper').hide();
+		$('.chat-signin').show();
+		$('#nickname').focus();
+	}
+
 	$(document).ready(function() {
 		$('.chat-wrapper').hide();
 		$('#enterRoom').click(function(evt) {
@@ -106,8 +115,10 @@ body {
 			$('.chat-wrapper h2').text(nickName + "@" + room);
 			$('.chat-signin').hide();
 			$('.chat-wrapper').show();
+			$('#message').focus();
 		});
-		$('#send-button').click(function() {
+		$('#do-chat').submit(function(evt) {
+			evt.preventDefault();
 			sendMessage()
 		});
 	});
@@ -137,14 +148,20 @@ body {
 	<!-- /container -->
 
 	<div class="container chat-wrapper">
-		<h2 class="alert alert-success"></h2>
-		<div id="response"></div>
-		<fieldset>
-			<legend>Chat</legend>
-			<label>Message</label> <input type="text" id="message"
-				placeholder="Your message..." /> <input type="button"
-				id="send-button" value="Send" />
-		</fieldset>
+		<form id="do-chat">
+			<h2 class="alert alert-success"></h2>
+			<table id="response"></table>
+			<fieldset>
+				<legend>Chat</legend>
+				<div class="controls">
+					<input type="text" class="input-block-level" placeholder="Your message..." id="message" style="height:60px"/>
+					<input type="submit" class="btn btn-large btn-block btn-primary"
+						value="Send message" />
+					<button class="btn btn-large btn-block" type="button">Leave
+						room</button>
+				</div>
+			</fieldset>
+		</form>
 	</div>
 </body>
 </html>
