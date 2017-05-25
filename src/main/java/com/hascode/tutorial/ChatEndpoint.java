@@ -1,6 +1,7 @@
 package com.hascode.tutorial;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,6 +20,7 @@ public class ChatEndpoint {
 	public void open(final Session session, @PathParam("room") final String room) {
 		log.info("session openend and bound to room: " + room);
 		session.getUserProperties().put("room", room);
+              
 	}
 
 	@OnMessage

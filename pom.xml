@@ -71,26 +71,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.glassfish.embedded</groupId>
-				<artifactId>maven-embedded-glassfish-plugin</artifactId>
-				<version>4.0</version>
-				<configuration>
-					<goalPrefix>embedded-glassfish</goalPrefix>
-					<app>${basedir}/target/${project.artifactId}-${project.version}.war</app>
-					<autoDelete>true</autoDelete>
-					<port>8080</port>
-					<name>${project.artifactId}</name>
-					<contextRoot>hascode</contextRoot>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			
 		</plugins>
 	</build>
 
